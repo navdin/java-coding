@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class _1rainWaterTrapped {
@@ -87,6 +88,11 @@ public class _1rainWaterTrapped {
 
         }
 
+        String s="you";
+        char a= s.charAt(0);
+        if(s.charAt(0)=='('){
+
+        }
         System.out.println("vol is "+vol);
 //
 //        boolean pass=false;
