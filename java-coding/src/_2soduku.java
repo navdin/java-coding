@@ -61,12 +61,15 @@ public class _2soduku {
             }
         }
 
-//        for(int i=0; i<size; i++) {
-//            System.out.println();
-//            for (int j = 0; j < size; j++) {
-//                System.out.print(charAr[i][j]+"  ");
-//            }
-//        }
+        for(int i=0; i<size; i++) {
+            System.out.println();
+            for (int j = 0; j < size; j++) {
+                System.out.print(charAr[i][j]+"  ");
+            }
+        }
+        System.out.println();
+        System.out.println();
+
 
 
         HashMap<Integer, Integer> ar=new HashMap<Integer, Integer>();
@@ -88,9 +91,49 @@ public class _2soduku {
 
 
 
+//        int  a=6;
+//        System.out.println("a="+a);
+//
+//        String b=(a)+"";
+//        char c=b.charAt(0);
+//        System.out.println("b="+b);
+//        System.out.println("c="+c);
 
 
-        _2soduku.recur(ar1, ar2);
+
+
+        int final_K=-1,final_l=-1;
+        boolean found=false;
+        for(int i=8; i>=0; i--){
+            for(int j=8; j>=0; j--){
+
+                if(charAr[i][j]=='.');{
+                    final_K=i;
+                    final_l=j;
+                    found=true;
+                    break;
+                }
+
+            }
+            if(found)
+                break;
+
+        }
+        System.out.println("final_K="+final_K+" final_l="+final_l);
+        int[] done=new int[1];
+        done[0]=0;
+        _2soduku.recur(charAr,0, 0, final_K, final_l,  done);
+
+        for(int i=0; i<size; i++){
+            System.out.println();
+            for(int j=0; j<size; j++){
+
+                System.out.print(charAr[i][j]+" ");
+
+            }
+        }
+
+//        _2soduku.recur(ar1, ar2);
 
         //Charset.forName()
 
@@ -103,39 +146,194 @@ public class _2soduku {
 
     }
 
-    public static void recur(ArrayList<Integer> ar1, ArrayList<Integer> arPrev){
+    public static void recur(char[][] charAr, int k, int l, int final_k, int final_l, int[] done){
 
 
-        boolean changed=false;
+        boolean found=false;
 
-        for (int i:ar1) {
-            if(changed){
-                System.out.println();
-                for (int k : arPrev) {
-                    System.out.print(k);
+        for(int i=k; i<9; i++){
+            for(int j=0; j<9; j++){
+
+                if(charAr[i][j]=='.'){
+                    k=i;
+                    l=j;
+                    found=true;
+                    break;
                 }
+
+
             }
-            System.out.print(i);
-            ArrayList<Integer> ar2=new ArrayList<Integer>();
-            //ArrayList<Integer> ar3=new ArrayList<Integer>();
-            for (int j:ar1) {
-                if(j==i){
-                    arPrev.add(j);
-
-                }
-                if(j!=i){
-                    ar2.add(j);
-                }
+            if(found) {
+                found=false;
+                break;
             }
-            _2soduku.recur(ar2, arPrev);
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println("k="+k+"  l="+l+"  charAr[k][i]="+( charAr[k][l]));
 
-            arPrev.remove(arPrev.size()-1);
-            changed=true;
+
+
+//        ArrayList<Integer> list=new ArrayList<Integer>();
+        int[] list=new int[9];
+
+        for(int i=0; i<9; i++){
+            list[i]=i+1;
+        }
+        for(int i=0; i<9; i++){
+            if(charAr[k][i]!='.') {
+                //System.out.println("k="+k+"i="+i+"charAr[k][i]"+( charAr[k][i]));
+                list[Integer.parseInt(String.valueOf(charAr[k][i]))  - 1] = 0;
+            }
+
+            if(charAr[i][l]!='.') {
+                //System.out.println("k="+k+" i="+i+" charAr[k][i]"+( charAr[k][i]));
+                list[ Integer.parseInt(String.valueOf(charAr[i][l]))  - 1] = 0;
+            }
+        }
+        int k_start=(k/3);
+        k_start=k_start*3;
+        int l_start=(l/3);
+        l_start=l_start*3;
+
+        for(int i=k_start; i<=k_start+2; i++){
+            for(int j=l_start; j<=l_start+2; j++) {
+                if(charAr[i][j]!='.')
+                    list[Integer.parseInt(String.valueOf(charAr[i][j]))-1]=0;
+            }
 
         }
+        System.out.println();
+//        for(int i=0;i<9; i++){
+//            System.out.print(list[i]+"  ");
+//        }
+
+        boolean functionReturned=false;
+        for(int i=0; i<9; i++){
+            boolean numFound=false;
+
+            if(functionReturned && list[i]!=0){
+                for(int m=0; m<9; m++) {
+                    if (charAr[k][m] == (list[i] + "").charAt(0)) {
+                        numFound = true;
+                        break;
+                        //System.out.println("k="+k+"i="+i+"charAr[k][i]"+( charAr[k][i]));
+                        //list[Integer.parseInt(String.valueOf(charAr[k][i]))  - 1] = 0;
+                    }
+
+                    if (charAr[m][l] == (list[i] + "").charAt(0)) {
+                        numFound = true;
+                        break;
+                        //System.out.println("k="+k+" i="+i+" charAr[k][i]"+( charAr[k][i]));
+                        //list[ Integer.parseInt(String.valueOf(charAr[i][l]))  - 1] = 0;
+                    }
+                }
+
+
+                for(int m=k_start; m<=k_start+2; m++){
+                    for(int n=l_start; n<=l_start+2; n++) {
+                        if(charAr[m][n]==(list[i] + "").charAt(0)){
+                            numFound = true;
+                                break;
+                            }
+                        }
+                        if(numFound)
+                            break;
+                }
+            }
+
+
+            if(!numFound && list[i]!=0){
+                charAr[k][l]=((list[i])+"").charAt(0);
+                System.out.println("\ncharAr["+k+"]["+l+"]="+charAr[k][l]);
+                if(k==8 && l==6){
+
+                    for(int y=0; y<9; y++){
+                        System.out.println();
+                        for(int z=0; z<9; z++){
+
+                            System.out.print(charAr[y][z]+" ");
+
+                        }
+                    }
+                    done[0]=1;
+                    return;
+                }
+                System.out.println("\n_2soduku.recur(charAr,"+ k+","+ l+")\n");
+                _2soduku.recur(charAr, k, l, final_k, final_l, done);
+                if(done[0]==1){
+                    System.out.println("done[0]="+done[0]);
+                    return;
+                }
+                functionReturned=true;
+
+                charAr[k][l]='.';
+                System.out.println("function returned to (k="+k+", l="+l+")");
+            }
+        }
+
+//        for (int i:ar1) {
+//            if(changed){
+//                System.out.println();
+//                for (int k : arPrev) {
+//                    System.out.print(k);
+//                }
+//            }
+//            System.out.print(i);
+//            ArrayList<Integer> ar2=new ArrayList<Integer>();
+//            //ArrayList<Integer> ar3=new ArrayList<Integer>();
+//            for (int j:ar1) {
+//                if(j==i){
+//                    arPrev.add(j);
+//
+//                }
+//                if(j!=i){
+//                    ar2.add(j);
+//                }
+//            }
+//            _2soduku.recur(ar2, arPrev);
+//
+//            arPrev.remove(arPrev.size()-1);
+//            changed=true;
+//
+//        }
 
 
     }
+
+//    public static void recur(ArrayList<Integer> ar1, ArrayList<Integer> arPrev){
+//
+//
+//        boolean changed=false;
+//
+//        for (int i:ar1) {
+//            if(changed){
+//                System.out.println();
+//                for (int k : arPrev) {
+//                    System.out.print(k);
+//                }
+//            }
+//            System.out.print(i);
+//            ArrayList<Integer> ar2=new ArrayList<Integer>();
+//            //ArrayList<Integer> ar3=new ArrayList<Integer>();
+//            for (int j:ar1) {
+//                if(j==i){
+//                    arPrev.add(j);
+//
+//                }
+//                if(j!=i){
+//                    ar2.add(j);
+//                }
+//            }
+//            _2soduku.recur(ar2, arPrev);
+//
+//            arPrev.remove(arPrev.size()-1);
+//            changed=true;
+//
+//        }
+//
+//
+//    }
 
 
 
